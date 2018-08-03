@@ -1,0 +1,11 @@
+<!--La propriété ngClass permet d'attribuer dynamiquement des classes aux objets du Dom -->
+<li [ngClass]="{'list-group-item': true, 'list-group-item-success': appareilStatus === 'allumé', 'list-group-item-danger': appareilStatus === 'éteint'  }">
+  <!--La directive définit quelle condition est true pour que cette div s'affiche-->
+  <div style="width:20px; height: 20px; background-color: red;" 
+  *ngIf="appareilStatus === 'éteint'"></div>
+  <!--Créer une liaison de donnée avec l'interpolation-->
+  <!--La propriété ngStyle permet de changer la couleur-->
+  <h4 [ngStyle]="{color: getColor()}">Appareil: {{ appareilName }} -- Statut: {{ getStatus() }}</h4>
+  <!-- Two-way binding [(ngModel)] Liaison à l'événement et à la propriété en même tps-->
+  <input type="text" class="form-control" [(ngModel)]="appareilName">
+</li>
