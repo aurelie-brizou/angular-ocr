@@ -7,11 +7,13 @@ import { AppareilService } from '../service/appareil.service';
   styleUrls: ['./appareil.component.scss']
 })
 export class AppareilComponent implements OnInit {
- 
+
   // propriétés qui allimentent l'interpolation et avec input c'est une propriété personnalisée
-  @Input() appareilName:string;
-  @Input() appareilStatus:string;
-@Input() indexOfAppareil:number;
+  @Input() appareilName: string;
+  @Input() appareilStatus: string;
+  @Input() indexOfAppareil: number;
+  @Input() id: number;
+  
   constructor(private appareilService: AppareilService) { }
 
   ngOnInit() {
@@ -22,7 +24,7 @@ export class AppareilComponent implements OnInit {
   }
 
   getColor() {
-    if(this.appareilStatus === 'allumé') {
+    if (this.appareilStatus === 'allumé') {
       return 'green';
     } else if (this.appareilStatus === 'éteint') {
       return 'red';
@@ -30,11 +32,11 @@ export class AppareilComponent implements OnInit {
   }
 
   onSwitchOn() {
-this.appareilService.switchOnOne(this.indexOfAppareil);
+    this.appareilService.switchOnOne(this.indexOfAppareil);
   }
 
   onSwitchOff() {
-    this.appareilService.switchOnOne(this.indexOfAppareil);
+    this.appareilService.switchOnOff(this.indexOfAppareil);
   }
 
 }

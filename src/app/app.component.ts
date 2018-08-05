@@ -1,50 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { resolve } from 'url';
-import { AppareilService } from './service/appareil.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable, interval, Subscription } from 'rxjs'
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
-  // création d'une valeur globale donc ds app-component
-  // la condition vérifie si l'utilisateur est authentifié 
-  isAuth = false;
+export class AppComponent implements OnInit, OnDestroy {
 
-  lastUpdate = new Date();
-
-  // def d'une propriété qui est vouée à être async
-  lastUpdatePromise = new Promise((resolve, reject) => {
-    const date = new Date();
-    setTimeout(
-      () => {
-        resolve(date);
-      }, 2000
-    );
-  });
- 
-
-  appareils:any[];
-  constructor(private appareilService: AppareilService) {
-    setTimeout(
-      () => {
-        this.isAuth = true;
-      }, 4000
-    );
+  secondes: number;
+  counterSubscription: Subscription;
+  constructor() {
   }
 
-  // indique que l'array appareils sera égale au tableau du service
   ngOnInit() {
-    this.appareils = this.appareilService.appareils;
-  }
+    const counter = interval(1000);
+    this.counterSubscription = counter.subscribe(
+      (value: number) => {
+        this.secondes = value;
+      }
 
-  // le component appelle les méthodes du service
-  onAllumer() {
-    this.appareilService.switchOnAll();
+    );
   }
-  onEteindre() {
-    this.appareilService.switchOffAll();
+  // éviter le problème des comportements à l'infini
+  ngOnDestroy() {
+    this.counterSubscription.unsubscribe();
   }
 }
 
